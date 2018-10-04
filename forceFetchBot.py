@@ -164,13 +164,14 @@ if __name__ == '__main__':
 
             # Get status and append to log
             status_message = driver.find_element_by_class_name("statusMessageSuccess").text
-            log.append(status_message)
+            log.append("{0} : {1}".format(date, status_message))
 
-            # Change iframe and close window
-            close_button = driver.find_element_by_id("myModal").find_element_by_tag_name("a")[0]
+            # Switch to top-most content
+            driver.switch_to_default_content()
+            # Select close button (last anchor tag) and close modal window
+            close_button = driver.find_elements_by_tag_name("a")[-1]
             close_button.click()
             time.sleep(1)
-            driver.switch_to.frame(driver.find_elements_by_tag_name("iframe")[0])
         
         # If errors in log print them ??
 
