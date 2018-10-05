@@ -162,9 +162,15 @@ if __name__ == '__main__':
                 time.sleep(3)
                 print("Waiting for fetcher / normalizer / loader to finish...")
 
-            # Get status and append to log
+            # Get status message and details
             status_message = driver.find_element_by_class_name("statusMessageSuccess").text
-            log.append("{0} : {1}".format(date, status_message))
+            num_errors = 1
+            num_inserts = 1
+            num_updates = 1
+            num_duplicates = 1  # Edit??
+
+            # Append to log
+            log.append("date:{0} | status message:{1} | errors:{2} | inserts:{3} | updates:{4} | duplicates:{5}".format(date, status_message, num_errors, num_inserts, num_updates, num_duplicates))
 
             # Switch to top-most content
             driver.switch_to_default_content()
@@ -176,6 +182,7 @@ if __name__ == '__main__':
         # If errors in log print them ??
 
         # Print log and close driver
+        print("Displaying log status:")
         print(log)
         driver.close()
     
