@@ -90,6 +90,7 @@ if __name__ == '__main__':
 
         # Loop over the dates that were entered
         for date in dates:
+            print("--- Excecuting manual operation for {0} ---".format(date))
             # Wait, find the date box, change date
             time.sleep(1)
             date_elem = driver.find_element_by_css_selector("#txtFFDateIn")
@@ -158,19 +159,25 @@ if __name__ == '__main__':
                 print("Waiting for fetcher to initialize...")  # Select dataset error
 
             # Wait to check for completed status message
+            print("Waiting for fetcher / normalizer / loader to finish...")
             while driver.find_element_by_class_name("statusMessageSuccess").text in ("Not started yet", "Fetcher in Progress", "Normalizer in Progress", "Completed Normalizer", "Loader in Progress"):
                 time.sleep(3)
-                print("Waiting for fetcher / normalizer / loader to finish...")
+                if driver.find_element_by_class_name("statusMessageSuccess").text is "Fetcher Error":
+                    raise IOError("Fetcher encountered an error.")  # Change this ??
 
             # Get status message and details
             status_message = driver.find_element_by_class_name("statusMessageSuccess").text
-            num_errors = 1
-            num_inserts = 1
-            num_updates = 1
-            num_duplicates = 1  # Edit??
+            detail_message = driver.find_element_by_tag_name("textarea").text.split("|")[2].strip().split(";")
+            total = detail_message[0].split("=")[1]
+            num_duplicates = detail_message[1].split("=")[1]
+            num_updates = detail_message[2].split("=")[1]
+            num_inserts = detail_message[3].split("=")[1]
+            num_errors = detail_message[4].split("=")[1]
+            job_queue_id = detail_message[5].split("=")[1]
 
             # Append to log
-            log.append("date:{0} | status message:{1} | errors:{2} | inserts:{3} | updates:{4} | duplicates:{5}".format(date, status_message, num_errors, num_inserts, num_updates, num_duplicates))
+            log.append("date:{0} | status message:{1} | total:{2} | duplicates:{3} | updates:{4} | inserts:{5} | errors:{6} | job_queue_id:{7}"
+                        .format(date, status_message, total, num_duplicates, num_updates, num_inserts, num_errors, job_queue_id))
 
             # Switch to top-most content
             driver.switch_to_default_content()
@@ -179,11 +186,20 @@ if __name__ == '__main__':
             close_button.click()
             time.sleep(1)
         
-        # If errors in log print them ??
+        # Print successful and unsuccessful jobs
+        print("\nSuccessful Jobs:")
+        for entry in log:
+            # If no errors
+            if int(entry.split("|")[6].strip().split(":")[1]) == 0:
+                print(entry)
+        
+        print("\nUnsuccessful Jobs:")
+        for entry in log:
+            # If no errors
+            if int(entry.split("|")[6].strip().split(":")[1]) != 0:
+                print(entry)
 
-        # Print log and close driver
-        print("Displaying log status:")
-        print(log)
+        # Close driver
         driver.close()
     
     except KeyboardInterrupt:
