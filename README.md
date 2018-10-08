@@ -4,9 +4,17 @@
 
 *By Dominic Eggerman*
 
+### Installation
+
+In order to run the program, you will need `selenium`, which can be installed from the command line with `pip install selenium`.  Selenium is a module that can automate browsers and test web applications.
+
+You will also need the ChromeDriver WebDriver for Chrome (https://sites.google.com/a/chromium.org/chromedriver/downloads).  I have included the file in the /drivers/ folder in this program.  The program accesses this file so it is important not to move things around (or change the paths).
+
 ### How To - `forceFetchBot`
 
-Launch `forceFetchBot` from the command line with `python forceFetchBot.py`.  The input instructions are straightforward from then on out.  Note that the chrome driver webpage that the program creates acts as a interactable webpage, and can be manipulated by the user like an internet browser.  Therefore it is important to remember not to click around the driver page as it will throw off the program, which does not anticipate any user input after launching its jobs.
+Launch `forceFetchBot` from the command line with `python forceFetchBot.py`.  The input instructions are straightforward from then on out.  Note that the chrome webpage that the program creates acts as a interactable webpage, and can be manipulated by the user like an internet browser.  Therefore it is important to remember not to click around the driver page as it will throw off the program, which does not anticipate any user input after launching.
+
+To stop the driver running, you can close the driver window or press CTRL + C while focusing on the command line to cause a keyboard interrupt.
 
 ### Known bugs
 

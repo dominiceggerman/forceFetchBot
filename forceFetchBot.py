@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     try:
         # Start a Chrome driver
-        driver = webdriver.Chrome("C:/Users/deggerman/chromedriver_win32/chromedriver.exe")
+        driver = webdriver.Chrome("drivers/chromedriver.exe")
         # Navigate to page
         driver.get("http://gcc.genscape.com/GCCcontent/intranet/manual_normalization.php")
         # Wait and check for this string in title
