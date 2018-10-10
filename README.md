@@ -19,3 +19,4 @@ To stop the driver running, you can close the driver window or press CTRL + C wh
 ### Known bugs
 
 - At times the web driver can hang up when selecting a source id and the job table does not load and is not caught by the backup while loop. This bug is seen when the driver clicks the button to force fetch and the web message appears saying "Please select a dataset".
+    - You can manually fix this bug as the program is running.  When the terminal starts printing "Waiting for fetcher to initialize...", you can select another pipeline, re-select the desired pipeline, check the desired job box, and click the "Force Fetch" button.  The loop will catch the popup window and the program will continue.

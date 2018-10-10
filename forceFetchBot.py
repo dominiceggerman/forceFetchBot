@@ -162,8 +162,19 @@ if __name__ == '__main__':
             print("Waiting for fetcher / normalizer / loader to finish...")
             while driver.find_element_by_class_name("statusMessageSuccess").text in ("Not started yet", "Fetcher in Progress", "Normalizer in Progress", "Completed Normalizer", "Loader in Progress"):
                 time.sleep(3)
-                if driver.find_element_by_class_name("statusMessageSuccess").text is "Fetcher Error":
-                    raise IOError("Fetcher encountered an error.")  # Change this ??
+            
+            # Continue / break on certain status messages
+            time.sleep(1)
+            if driver.find_element_by_class_name("statusMessageSuccess").text is "Fetcher No Data Available":
+                # Close window
+                close_button = driver.find_elements_by_tag_name("a")[-1]
+                close_button.click()
+                time.sleep(0.1)
+                # Switch to top-most content and continue
+                driver.switch_to_default_content()
+                continue
+            elif driver.find_element_by_class_name("statusMessageSuccess").text is "Fetcher Error":
+                raise IOError("Fetcher encountered an error.")  # Change this ??
 
             # Get status message and details
             status_message = driver.find_element_by_class_name("statusMessageSuccess").text
@@ -203,5 +214,7 @@ if __name__ == '__main__':
         driver.close()
     
     except KeyboardInterrupt:
-        # Close the driver
+        # Print log and close the driver
+        for entry in log:
+            print(entry)
         driver.close()
