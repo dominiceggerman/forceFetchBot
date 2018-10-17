@@ -10,9 +10,12 @@ def dateRangeGenerator():
     start_date = input("Start date (MM/DD/YYYY): ")
     month, day, year = map(int, start_date.split("/"))
     start_date = datetime.date(year, month, day)
-    end_date = input("End date (MM/DD/YYYY): ")
-    month, day, year = map(int, end_date.split("/"))
-    end_date = datetime.date(year, month, day)
+    end_date = input("End date (MM/DD/YYYY) - enter nothing for today: ")
+    if end_date == "":
+        end_date = datetime.date.today()
+    else:
+        month, day, year = map(int, end_date.split("/"))
+        end_date = datetime.date(year, month, day)
 
     # Return [range of dates] (inclusive)
     num_days = end_date - start_date
